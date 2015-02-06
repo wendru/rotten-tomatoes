@@ -26,7 +26,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func loadData() {
         let apiKey = "sqcdumcwj9h8wp9a8r8v6smp"
-        let url = NSURL(string: "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/top_rentals.json?apikey=" + apiKey)
+        let url = NSURL(string: "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/box_office.json?apikey=" + apiKey)
         let request = NSURLRequest(URL: url!)
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response, data, error) in
             var errorValue: NSError? = nil
@@ -45,11 +45,6 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return movies.count
     }
     
-//    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-//        return 10
-//    }
-    
-    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier("MovieCell") as MovieCell
         let movie = movies[indexPath.row] as NSDictionary
@@ -57,9 +52,27 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.separatorInset = UIEdgeInsetsZero
         cell.layoutMargins = UIEdgeInsetsZero
         
+        // TITLE
         cell.titleLabel.text = movie["title"] as NSString
-        cell.synopsis.text = movie["synopsis"] as NSString
-        cell.poster.setImageWithURL(NSURL(string: movie["posters"]?["thumbnail"]? as NSString))
+        
+        // RUNTIME
+        var runtime = movie["runtime"] as Int
+        cell.runTime.text = NSString(format: "%d Hours %d Minutes", runtime / 60, runtime % 60)
+        
+        // MPAA RATING
+        cell.mpaaRating.text = movie["mpaa_rating"] as NSString
+        
+        // CRITICS RATING
+        cell.criticsRating.text = NSString(format: "%d%%", movie["ratings"]?["critics_score"] as Int)
+        
+        // AUDIENCE RATING
+        cell.audienceRating.text = NSString(format: "%d%%", movie["ratings"]?["audience_score"] as Int)
+        
+        // POSTER IMAGE
+        var posterURL = NSURL(
+            string: (movie["posters"]?["thumbnail"]? as NSString).stringByReplacingOccurrencesOfString("tmb", withString: "pro")
+        )
+        cell.poster.setImageWithURL(posterURL)
         
         return cell
     }
