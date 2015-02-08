@@ -11,6 +11,7 @@ import UIKit
 class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var tableView: UITableView!
     var movies = [NSDictionary]()
+    var destinationController = MovieDetailViewController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +31,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let request = NSURLRequest(URL: url!)
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response, data, error) in
             var errorValue: NSError? = nil
-            let dictionary = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &errorValue) as NSDictionary
+            let dictionary = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &errorValue) as NSDictionary
             self.movies = dictionary["movies"] as [NSDictionary]
             self.tableView.reloadData()
         })
@@ -76,15 +77,17 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         return cell
     }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        destinationController.movie = movies[indexPath.row]
+    }
 
-    /*
+
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        self.destinationController = segue.destinationViewController as MovieDetailViewController
+        super.prepareForSegue(segue, sender: sender)
     }
-    */
-
 }
