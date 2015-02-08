@@ -12,6 +12,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var tableView: UITableView!
     var movies = [NSDictionary]()
     var destinationController = MovieDetailViewController()
+    var HUD = JGProgressHUD(style: JGProgressHUDStyle.Dark)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +27,8 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func loadData() {
+        HUD.showInView(self.view)
+        
         let apiKey = "sqcdumcwj9h8wp9a8r8v6smp"
         let url = NSURL(string: "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/box_office.json?apikey=" + apiKey)
         let request = NSURLRequest(URL: url!)
@@ -35,6 +38,8 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             self.movies = dictionary["movies"] as [NSDictionary]
             self.tableView.reloadData()
         })
+        
+        HUD.dismissAfterDelay(1.0, animated: true)
     }
 
     override func didReceiveMemoryWarning() {

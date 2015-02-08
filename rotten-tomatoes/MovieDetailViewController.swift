@@ -18,6 +18,7 @@ class MovieDetailViewController: UIViewController {
     @IBOutlet weak var mpaaRating: UILabel!
     @IBOutlet weak var criticsRating: UILabel!
     @IBOutlet weak var audienceRating: UILabel!
+    var HUD = JGProgressHUD(style: JGProgressHUDStyle.Dark)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,6 +26,8 @@ class MovieDetailViewController: UIViewController {
     }
     
     func setMovieDetail() {
+        HUD.showInView(self.view)
+        
         // TITLE
         navItem.title = movie["title"] as NSString
         
@@ -49,6 +52,8 @@ class MovieDetailViewController: UIViewController {
             string: (movie["posters"]?["thumbnail"]? as NSString).stringByReplacingOccurrencesOfString("tmb", withString: "ori")
         )
         poster.setImageWithURL(posterURL!)
+        
+        HUD.dismissAfterDelay(1.0, animated: true)
     }
 
     override func didReceiveMemoryWarning() {
