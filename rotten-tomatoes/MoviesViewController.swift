@@ -8,15 +8,18 @@
 
 import UIKit
 
-class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITabBarDelegate {
+class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITabBarDelegate, UISearchBarDelegate {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var warningView: UIView!
     @IBOutlet weak var tabs: UITabBar!
+    @IBOutlet weak var searchBar: UISearchBar!
     
     var movies = [NSDictionary]()
+    var filteredMovies = [NSDictionary]()
     var destinationController = MovieDetailViewController()
     var HUD = JGProgressHUD(style: JGProgressHUDStyle.Dark)
     var refreshControl: UIRefreshControl!
+    var isFiltered = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +32,8 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         tabs.selectedItem = tabs.items?.first as? UITabBarItem
         tabs.delegate = self
+        
+        searchBar.delegate = self
         
         createRefreshControl()
         loadData()
@@ -75,12 +80,23 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return movies.count
+        if(isFiltered) {
+            return filteredMovies.count
+        } else {
+            return movies.count
+        }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier("MovieCell") as MovieCell
-        let movie = movies[indexPath.row] as NSDictionary
+        
+        var movie: NSDictionary
+        
+        if(isFiltered) {
+            movie = filteredMovies[indexPath.row] as NSDictionary
+        } else {
+            movie = movies[indexPath.row] as NSDictionary
+        }
         
         cell.separatorInset = UIEdgeInsetsZero
         cell.layoutMargins = UIEdgeInsetsZero
@@ -114,11 +130,45 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        destinationController.movie = movies[indexPath.row]
+        if(isFiltered) {
+            destinationController.movie = filteredMovies[indexPath.row]
+        } else {
+            destinationController.movie = movies[indexPath.row]
+        }
     }
     
     func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem!) {
         loadData()
+    }
+    
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        if (searchText == "") {
+            isFiltered = false
+        } else {
+            isFiltered = true
+            filteredMovies = [NSDictionary]()
+            
+            for(var i = 0; i < movies.count; i++) {
+                let title = movies[i]["title"] as String
+                if(title.lowercaseString.rangeOfString(searchText.lowercaseString) != nil) {
+                    filteredMovies.append(movies[i])
+                }
+            }
+            
+            tableView.reloadData()
+        }
+    }
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        tableView.reloadData()
+        self.view.endEditing(true)
+    }
+    
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        isFiltered = false
+        searchBar.text = ""
+        tableView.reloadData()
+        self.view.endEditing(true)
     }
     
     func onRefresh() {
