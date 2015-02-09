@@ -63,6 +63,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             if(error != nil) {
                 self.warningView.hidden = false
             } else {
+                self.warningView.hidden = true
                 var errorValue: NSError? = nil
                 let dictionary = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &errorValue) as NSDictionary
                 self.movies = dictionary["movies"] as [NSDictionary]
