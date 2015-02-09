@@ -39,7 +39,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             self.tableView.reloadData()
         })
         
-        HUD.dismissAfterDelay(1.0, animated: true)
+        HUD.dismissAfterDelay(0.5, animated: true)
     }
 
     override func didReceiveMemoryWarning() {

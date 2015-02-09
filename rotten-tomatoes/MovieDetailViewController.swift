@@ -53,7 +53,7 @@ class MovieDetailViewController: UIViewController {
         )
         poster.setImageWithURL(posterURL!)
         
-        HUD.dismissAfterDelay(1.0, animated: true)
+        HUD.dismissAfterDelay(0.5, animated: true)
     }
 
     override func didReceiveMemoryWarning() {
@@ -64,8 +64,14 @@ class MovieDetailViewController: UIViewController {
     @IBAction func handlePanning(sender: AnyObject) {
         if(sender.state != UIGestureRecognizerState.Ended) { return }
         
+        var animation = CABasicAnimation(keyPath: "bounds")
+        animation.duration = 0.25
+        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+        
         var translation = sender.translationInView(scroller)
         var bounds = scroller.bounds
+        
+        animation.fromValue = NSValue(CGRect: bounds)
         
         if(translation.y > 0) {
             bounds.origin.y = 0
@@ -73,6 +79,9 @@ class MovieDetailViewController: UIViewController {
             bounds.origin.y = 470
         }
         
+        animation.toValue = NSValue(CGRect: bounds)
+        scroller.layer.addAnimation(animation, forKey: "bounds")
+
         scroller.bounds = bounds
         sender.setTranslation(CGPointZero, inView: scroller)
     }
