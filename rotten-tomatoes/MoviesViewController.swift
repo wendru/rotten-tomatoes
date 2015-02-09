@@ -15,6 +15,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var movies = [NSDictionary]()
     var destinationController = MovieDetailViewController()
     var HUD = JGProgressHUD(style: JGProgressHUDStyle.Dark)
+    var refreshControl: UIRefreshControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +26,14 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tableView.separatorInset = UIEdgeInsetsZero
         tableView.layoutMargins = UIEdgeInsetsZero
         
+        createRefreshControl()
         loadData()
+    }
+    
+    func createRefreshControl() {
+        refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: "onRefresh", forControlEvents: UIControlEvents.ValueChanged)
+        tableView.insertSubview(refreshControl, atIndex: 0)
     }
     
     func loadData() {
@@ -92,6 +100,11 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         destinationController.movie = movies[indexPath.row]
+    }
+    
+    func onRefresh() {
+        loadData()
+        refreshControl.endRefreshing()
     }
 
 
