@@ -22,7 +22,7 @@ Time spent:
 - [ ] Customize the highlight and selection effect of the cell.
 - [ ] Customize the navigation bar.
 - [x] Add a tab bar for Box Office and DVD.
-- [ ] Add a search bar: pretty simple implementation of searching against the existing table view data.
+- [x] Add a search bar: pretty simple implementation of searching against the existing table view data.
 
 ### Walkthrough
 
