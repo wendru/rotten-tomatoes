@@ -10,10 +10,12 @@ import UIKit
 
 class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var warningView: UIView!
+    
     var movies = [NSDictionary]()
     var destinationController = MovieDetailViewController()
     var HUD = JGProgressHUD(style: JGProgressHUDStyle.Dark)
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -33,10 +35,15 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let url = NSURL(string: "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/box_office.json?apikey=" + apiKey)
         let request = NSURLRequest(URL: url!)
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response, data, error) in
-            var errorValue: NSError? = nil
-            let dictionary = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &errorValue) as NSDictionary
-            self.movies = dictionary["movies"] as [NSDictionary]
-            self.tableView.reloadData()
+            if(error != nil) {
+                self.warningView.hidden = false
+            } else {
+                var errorValue: NSError? = nil
+                let dictionary = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &errorValue) as NSDictionary
+                self.movies = dictionary["movies"] as [NSDictionary]
+                self.tableView.reloadData()
+            }
+            
         })
         
         HUD.dismissAfterDelay(0.5, animated: true)

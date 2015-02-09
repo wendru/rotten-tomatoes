@@ -10,6 +10,7 @@
 		32DEA92BF46A765BE3459C20 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AFA80430C9D6BF79F39E786 /* libPods.a */; };
 		5429A82F1A834A9D00D7E065 /* MovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5429A82E1A834A9D00D7E065 /* MovieCell.swift */; };
 		54C012A01A872B8A008DEF6D /* MovieDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C0129F1A872B8A008DEF6D /* MovieDetailViewController.swift */; };
+		54C012A41A883B96008DEF6D /* warning.png in Resources */ = {isa = PBXBuildFile; fileRef = 54C012A31A883B96008DEF6D /* warning.png */; };
 		54CE5F6A1A82D7910039F806 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54CE5F691A82D7910039F806 /* AppDelegate.swift */; };
 		54CE5F6C1A82D7910039F806 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54CE5F6B1A82D7910039F806 /* ViewController.swift */; };
 		54CE5F6F1A82D7910039F806 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54CE5F6D1A82D7910039F806 /* Main.storyboard */; };
@@ -35,6 +36,7 @@
 		5429A82E1A834A9D00D7E065 /* MovieCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieCell.swift; sourceTree = "<group>"; };
 		54C0129A1A84381E008DEF6D /* rotten-tomatoes-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "rotten-tomatoes-Bridging-Header.h"; sourceTree = "<group>"; };
 		54C0129F1A872B8A008DEF6D /* MovieDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieDetailViewController.swift; sourceTree = "<group>"; };
+		54C012A31A883B96008DEF6D /* warning.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = warning.png; sourceTree = "<group>"; };
 		54CE5F641A82D7910039F806 /* rotten-tomatoes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "rotten-tomatoes.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		54CE5F681A82D7910039F806 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		54CE5F691A82D7910039F806 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -125,6 +127,7 @@
 		54CE5F671A82D7910039F806 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				54C012A31A883B96008DEF6D /* warning.png */,
 				54CE5F681A82D7910039F806 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -229,6 +232,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				54C012A41A883B96008DEF6D /* warning.png in Resources */,
 				54CE5F6F1A82D7910039F806 /* Main.storyboard in Resources */,
 				54CE5F741A82D7910039F806 /* LaunchScreen.xib in Resources */,
 				54CE5F711A82D7910039F806 /* Images.xcassets in Resources */,
