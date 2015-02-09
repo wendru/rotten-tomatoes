@@ -8,9 +8,10 @@
 
 import UIKit
 
-class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITabBarDelegate {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var warningView: UIView!
+    @IBOutlet weak var tabs: UITabBar!
     
     var movies = [NSDictionary]()
     var destinationController = MovieDetailViewController()
@@ -26,6 +27,9 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tableView.separatorInset = UIEdgeInsetsZero
         tableView.layoutMargins = UIEdgeInsetsZero
         
+        tabs.selectedItem = tabs.items?.first as? UITabBarItem
+        tabs.delegate = self
+        
         createRefreshControl()
         loadData()
     }
@@ -39,8 +43,16 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func loadData() {
         HUD.showInView(self.view)
         
+        let target = tabs.selectedItem?.title!
         let apiKey = "sqcdumcwj9h8wp9a8r8v6smp"
-        let url = NSURL(string: "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/box_office.json?apikey=" + apiKey)
+        var url: NSURL!
+        
+        if(target == "Box Office") {
+            url = NSURL(string: "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/box_office.json?apikey=" + apiKey)
+        } else {
+            url = NSURL(string: "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/top_rentals.json?apikey=" + apiKey)
+        }
+        
         let request = NSURLRequest(URL: url!)
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response, data, error) in
             if(error != nil) {
@@ -73,6 +85,9 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.separatorInset = UIEdgeInsetsZero
         cell.layoutMargins = UIEdgeInsetsZero
         
+        // NAVBAR HEADER
+        navigationItem.title = tabs.selectedItem?.title
+        
         // TITLE
         cell.titleLabel.text = movie["title"] as NSString
         
@@ -102,11 +117,14 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         destinationController.movie = movies[indexPath.row]
     }
     
+    func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem!) {
+        loadData()
+    }
+    
     func onRefresh() {
         loadData()
         refreshControl.endRefreshing()
     }
-
 
     // MARK: - Navigation
 
